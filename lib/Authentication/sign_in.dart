@@ -61,22 +61,26 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: [
+              SizedBox(height: MediaQuery.of(context).size.height * .21),
               Icon(
                 Icons.message_rounded,
                 color: Theme.of(context).colorScheme.primary,
                 size: 55,
               ),
               const SizedBox(height: 10),
-              Text(
-                'Welcome Back! You\'ve Been Missed!',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.inversePrimary,
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Welcome Back! You\'ve Been Missed!',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
                 ),
               ),
               const SizedBox(height: 30),

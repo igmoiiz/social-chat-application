@@ -28,7 +28,7 @@ class MyTextfield extends StatelessWidget {
           if (value != null && validationRegExp.hasMatch(value)) {
             return null;
           }
-          return 'This Field Can\'t be Empty!';
+          return 'Please Enter Your ${labelText.toString()}';
         },
         controller: controller,
         obscureText: obscure,

@@ -48,6 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
           });
           Utils().toastMessage(error.toString());
         });
+        print('signup logic invoked');
       } catch (e) {
         showDialog(
           context: context,
@@ -57,6 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
             );
           },
         );
+        print('signup error invoked');
       }
     } else {
       showDialog(
@@ -73,22 +75,26 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: [
+              SizedBox(height: MediaQuery.of(context).size.height * .09),
               Icon(
                 Icons.message_rounded,
                 color: Theme.of(context).colorScheme.primary,
                 size: 55,
               ),
               const SizedBox(height: 10),
-              Text(
-                'Welcome Aboard! Let\'s Make Magic Happen!',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.inversePrimary,
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Welcome Aboard! Let\'s Make Magic Happen!',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
@@ -96,6 +102,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 key: inputControllers.formKey,
                 child: Column(
                   children: [
+                    MyTextfield(
+                      labelText: 'Full Name',
+                      obscure: false,
+                      controller: inputControllers.nameController,
+                      suffixIcon: null,
+                      validationRegExp: NAME_VALIDATION_REGEX,
+                      onSave: (value) {},
+                    ),
                     MyTextfield(
                       labelText: 'Email',
                       obscure: false,
@@ -126,7 +140,9 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 30),
               MyButton(
                 buttontext: 'Sign Up'.toUpperCase(),
-                onTap: () {},
+                onTap: () {
+                  signUpUserMethod(context);
+                },
                 loading: loading,
               ),
               const SizedBox(height: 30),

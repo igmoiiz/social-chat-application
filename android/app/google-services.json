@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "296150375110",
+    "project_id": "communication-87fa6",
+    "storage_bucket": "communication-87fa6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296150375110:android:65c64a0266ba6d051555c7",
+        "android_client_info": {
+          "package_name": "com.example.communication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjeeamBNq53NM7QASnNceF3Be21DYHuEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

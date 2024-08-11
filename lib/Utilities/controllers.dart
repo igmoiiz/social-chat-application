@@ -7,6 +7,7 @@ class InputControllers {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  final TextEditingController textController = TextEditingController();
 
   //  Global Form Key Reference
   final formKey = GlobalKey<FormState>();

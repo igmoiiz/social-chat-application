@@ -43,8 +43,8 @@ class _FlatButtonState extends State<FlatButton> {
               ),
               Text(
                 widget.text,
-                style: const TextStyle(
-                  color: Colors.black,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.inversePrimary,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1,
                   fontSize: 17,

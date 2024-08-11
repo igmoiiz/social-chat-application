@@ -48,7 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
           });
           Utils().toastMessage(error.toString());
         });
-        print('signup logic invoked');
+        
       } catch (e) {
         showDialog(
           context: context,
@@ -58,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
             );
           },
         );
-        print('signup error invoked');
+        
       }
     } else {
       showDialog(

@@ -1,3 +1,4 @@
+import 'package:communication/Interface/blocked_users_page.dart';
 import 'package:communication/Provider/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,31 +32,29 @@ class SettingsPage extends StatelessWidget {
               padding: EdgeInsets.all(MediaQuery.of(context).size.height * .01),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).colorScheme.primary,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  
-                  
                   //  dark mode
                   const Text(
-                    'Dark Mode',
+                    'Blocked Users',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       letterSpacing: 2,
                     ),
                   ),
-                  //  switch toggle
-                  CupertinoSwitch(
-                    applyTheme: true,
-                    activeColor: Theme.of(context).colorScheme.primary,
-                    value: Provider.of<ThemeProvider>(context, listen: false)
-                        .isDarkMode,
-                    onChanged: (value) =>
-                        Provider.of<ThemeProvider>(context, listen: false)
-                            .toggleTheme(),
-                  ),
+                  // button that navigates to blocked users page
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const BlockedUsersPage()));
+                      },
+                      icon: Icon(
+                        Icons.arrow_forward_ios,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ))
                 ],
               ),
             ),

@@ -7,33 +7,86 @@ import 'package:communication/Utilities/Services/Chat%20Services/chat_services.d
 import 'package:communication/Utilities/controllers.dart';
 import 'package:flutter/material.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   final receiverEmail;
   final receiverId;
-  ChatPage({
+  const ChatPage({
     super.key,
     required this.receiverEmail,
     required this.receiverId,
   });
 
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
   //  getting chat services
   final chatServices = ChatServices();
+
   //  getting authentication services
   final authServices = AuthServices();
-  //  instance for getting input controllers
+
+  //  instance for getting input controllers and scroll controllers
   final inputControllers = InputControllers();
+
   //  method for sending messages
   void sendMessages() async {
     //  if there is something inside text field to send a message (ensures no blank messages are being sent)
     if (inputControllers.textController.text.isNotEmpty) {
       //  send the message
       await chatServices.sendMessages(
-        receiverId,
+        widget.receiverId,
         inputControllers.textController.text,
       );
       //  clear the controller after sending the text messages
       inputControllers.textController.clear();
     }
+    scrollDown();
+  }
+
+  //  focus node for the text field
+  FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    //  add listeners to focus nodes
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        //  if the text field has focus, then the keyboard is open
+        //  cause a delay so that the keyboard could show up
+        //  then the amount of remaining space will be calculated
+        //  then scroll down
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () => scrollDown(),
+        );
+        //  wait a bit for list view to be built then scroll down automatically
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () => scrollDown(),
+        );
+      }
+    });
+  }
+
+  //  method for scrolling down once the remaining space is calculated
+  void scrollDown() {
+    inputControllers.scrollController.animateTo(
+      inputControllers.scrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  //  dispose the controllers
+  @override
+  void dispose() {
+    super.dispose();
+    focusNode.dispose();
+    inputControllers.textController.dispose();
+    inputControllers.scrollController.dispose();
   }
 
   @override
@@ -45,7 +98,7 @@ class ChatPage extends StatelessWidget {
         elevation: 0,
         foregroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
-        title: Text(receiverEmail),
+        title: Text(widget.receiverEmail),
       ),
       body: Column(
         children: [
@@ -62,7 +115,7 @@ class ChatPage extends StatelessWidget {
   Widget _buildMessagesList() {
     String senderId = authServices.getCurrentUser()!.uid;
     return StreamBuilder(
-      stream: chatServices.getMessages(receiverId, senderId),
+      stream: chatServices.getMessages(widget.receiverId, senderId),
       builder: (context, snapshot) {
         //  errors
         if (snapshot.hasError) {
@@ -71,7 +124,7 @@ class ChatPage extends StatelessWidget {
               child: Text('Exception has occurred: ${snapshot.error}'));
         }
         //  loading
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        else if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -86,11 +139,14 @@ class ChatPage extends StatelessWidget {
         }
         //  list view
 
-        return ListView(
-          children: snapshot.data!.docs
-              .map((doc) => _buildMessageItems(doc))
-              .toList(),
-        );
+        else {
+          return ListView(
+            controller: inputControllers.scrollController,
+            children: snapshot.data!.docs
+                .map((doc) => _buildMessageItems(doc))
+                .toList(),
+          );
+        }
       },
     );
   }
@@ -107,8 +163,12 @@ class ChatPage extends StatelessWidget {
 
     return Container(
       alignment: alignment,
-      child:
-          ChatBubble(message: data['messages'], isCurrentUser: isCurrentUser),
+      child: ChatBubble(
+        message: data['messages'],
+        isCurrentUser: isCurrentUser,
+        messageId: doc.id,
+        userId: data['senderId'],
+      ),
     );
   }
 
@@ -122,6 +182,7 @@ class ChatPage extends StatelessWidget {
           //  text field should take up most of the space
           Expanded(
             child: TextFormField(
+              focusNode: focusNode,
               controller: inputControllers.textController,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(

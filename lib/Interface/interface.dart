@@ -94,7 +94,7 @@ class _InterfacePageState extends State<InterfacePage> {
   // for building a stream of users
   Widget _buildUserList() {
     return StreamBuilder(
-      stream: chatServices.getUserStream(),
+      stream: chatServices.getUsersStreamExceptBlocked(),
       builder: (context, snapshot) {
         //  errors
         if (snapshot.hasError) {

@@ -1,0 +1,46 @@
+//  to change the application theme modes from within the application you can simple copy
+// this code and paste it into the settings folder and require all the header files if any
+
+Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Container(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.height * .01),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  
+                  
+                  //  dark mode
+                  const Text(
+                    'Dark Mode',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  //  switch toggle
+                  CupertinoSwitch(
+                    applyTheme: true,
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    value: Provider.of<ThemeProvider>(context, listen: false)
+                        .isDarkMode,
+                    onChanged: (value) =>
+                        Provider.of<ThemeProvider>(context, listen: false)
+                            .toggleTheme(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+
+// also paste this code in the main dart file and add the theme provider file to the multi provider
+//  and also add the theme provider file to the main widget tree
+//  also make sure to remove the darkTheme: darkMode functionality from the material application for it to work
+
+
+theme: Provider.of<ThemeProvider>(context).themeData,

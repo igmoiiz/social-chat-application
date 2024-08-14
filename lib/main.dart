@@ -1,5 +1,7 @@
 import 'package:communication/Authentication/sign_in.dart';
 import 'package:communication/Provider/theme_provider.dart';
+import 'package:communication/Themes/themes.dart';
+import 'package:communication/Utilities/Services/Chat%20Services/chat_services.dart';
 import 'package:communication/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +16,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   //running the application
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,9 +24,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: Provider.of<ThemeProvider>(context).themeData,
-      home: const SignInPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => ChatServices()),
+      ],
+      builder: (context, index) {
+        return MaterialApp(
+          theme: lightMode,
+          darkTheme: darkMode,
+          home: const SignInPage(),
+        );
+      },
     );
   }
 }

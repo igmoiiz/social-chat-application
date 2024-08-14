@@ -9,6 +9,9 @@ class InputControllers {
       TextEditingController();
   final TextEditingController textController = TextEditingController();
 
+  //  scroll controller
+  final ScrollController scrollController = ScrollController();
+
   //  Global Form Key Reference
   final formKey = GlobalKey<FormState>();
 }
